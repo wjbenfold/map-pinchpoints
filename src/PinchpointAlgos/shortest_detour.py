@@ -19,17 +19,17 @@ def getWeight(segment):
     )
 
 
-def getBottlenecks(usable_way_infos: List[WayInfo], *args):
+def getBottlenecks(way_infos: List[WayInfo], *args):
 
     G = nx.Graph()
 
-    def segmentGen(usable_way_infos):
-        for way_info in usable_way_infos:
+    def segmentGen(way_infos):
+        for way_info in way_infos:
             for segment in way_info.segments:
                 weight = getWeight(segment)
                 yield *segment, {"weight": weight}
 
-    G.add_edges_from(segmentGen(usable_way_infos))
+    G.add_edges_from(segmentGen(way_infos))
 
     print(G.number_of_nodes())
     print(G.number_of_edges())

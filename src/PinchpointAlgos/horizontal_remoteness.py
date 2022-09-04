@@ -3,7 +3,7 @@ import galilean_transform
 from my_types import LatLon, Segment
 
 
-def getBottlenecks(usable_way_infos, start_loc, end_loc):
+def getBottlenecks(way_infos, start_loc, end_loc):
     def getTransformers(start_loc, end_loc):
         x0 = start_loc.lon
         y0 = start_loc.lat
@@ -43,7 +43,7 @@ def getBottlenecks(usable_way_infos, start_loc, end_loc):
 
     transformed_segments = []
 
-    for way_info in usable_way_infos:
+    for way_info in way_infos:
         for segment in way_info.segments:
             transformed_segments.append(
                 Segment(

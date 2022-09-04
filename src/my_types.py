@@ -1,5 +1,17 @@
-from collections import namedtuple
+from typing import NamedTuple, List
 
-WayInfo = namedtuple("WayInfo", ["name", "type", "segments"])
-Segment = namedtuple("Segment", ["start_node", "end_node"])
-LatLon = namedtuple("LatLon", ["lat", "lon"])
+
+class LatLon(NamedTuple):
+    lat: float
+    lon: float
+
+
+class Segment(NamedTuple):
+    start_node: LatLon
+    end_node: LatLon
+
+
+class WayInfo(NamedTuple):
+    name: str
+    type: str
+    segments: List[Segment]

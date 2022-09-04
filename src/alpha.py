@@ -1,11 +1,23 @@
-import overpass_query
-import overpy
+# Known bugs
+#   - The algorithm drops half of loops because the network can't distinguish
+#     them
+#   - No route around something should make it a pinchpoint (at least in small
+#     networks)
+#
+# Additional features:
+#   - Location input
+#   - Portablility
+#   - Multiple maps
+#   - Draw the whole pinchpoint segment
+#   - Cache sections of map
+#   - YAML config?
+
+import FetchData
 import os_convert
-from my_types import WayInfo, Segment, LatLon
+from my_types import LatLon
 import plot
 
-# from PinchpointAlgos.horizontal_remoteness import getBottlenecks
-from PinchpointAlgos.shortest_detour import getBottlenecks
+from PinchpointAlgos import getBottlenecks
 
 grid_corner1 = "SX 999 960"
 grid_corner2 = "SS 95 01"
@@ -20,43 +32,12 @@ min_x, max_x = sorted((lon_corner1, lon_corner2))
 min_y, max_y = sorted((lat_corner1, lat_corner2))
 
 
-result: overpy.Result = overpass_query.get_highways_from_maps(
-    [(grid_corner1, grid_corner2)]
+way_infos = FetchData.get_ways(
+    maps=[(grid_corner1, grid_corner2)],
+    filtered_ways=["motorway", "service", "primary"],
 )
 
-
-def waysFromResult(result, filtered_highways):
-    def way_filter(way: overpy.Way) -> bool:
-        if way.tags.get("highway") in filtered_highways:
-            return False
-        return True
-
-    usable_ways = filter(way_filter, result.ways)
-
-    usable_way_infos = []
-
-    for way in usable_ways:
-        usable_way_infos.append(
-            WayInfo(
-                way.tags.get("name", "n/a"),
-                way.tags.get("highway", "n/a"),
-                [
-                    Segment(
-                        LatLon(float(way.nodes[ii].lat), float(way.nodes[ii].lon)),
-                        LatLon(float(way.nodes[ii + 1].lat), float(way.nodes[ii + 1].lon)),
-                    )
-                    for ii in range(len(way.nodes) - 1)
-                ],
-            )
-        )
-
-    return usable_way_infos
-
-
-usable_way_infos = waysFromResult(result, ["motorway", "service", "primary"])
-
-
-bottlenecks = getBottlenecks(usable_way_infos, start_loc, end_loc)
+bottlenecks = getBottlenecks("shortest_detour", way_infos)
 
 print("Bottlenecks")
 for bottleneck in bottlenecks:
