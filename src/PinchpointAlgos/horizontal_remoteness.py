@@ -1,9 +1,10 @@
+from typing import List, Tuple
 import numpy as np
-import galilean_transform
-from my_types import LatLon, Segment
+from . import galilean_transform
+from my_types import LatLon, Segment, WayInfo
 
 
-def getBottlenecks(way_infos, start_loc, end_loc):
+def getBottlenecks(way_infos: List[WayInfo], start_loc: LatLon, end_loc: LatLon):
     def getTransformers(start_loc, end_loc):
         x0 = start_loc.lon
         y0 = start_loc.lat
@@ -54,7 +55,7 @@ def getBottlenecks(way_infos, start_loc, end_loc):
 
     # Put segments in bins if they cross a line (based on which line they cross). They may be in more that one bin...
 
-    segment_bins = []
+    segment_bins: List[List[Segment]] = []
     for _ in range(NN):
         segment_bins.append([])
 
@@ -72,7 +73,7 @@ def getBottlenecks(way_infos, start_loc, end_loc):
 
     # Calculate where segments intersect lines
 
-    intersections = []
+    intersections: List[List[float]] = []
     for _ in range(NN):
         intersections.append([])
 
@@ -87,9 +88,9 @@ def getBottlenecks(way_infos, start_loc, end_loc):
             )
             intersections[bin_num].append(intersection_lon)
 
-    remotenesses = []
+    remotenesses: List[Tuple[float, LatLon]] = []
 
-    # For each line, identify any interesections far from the others
+    # For each line, identify any intersections far from the others
     for jj, line_intersections in enumerate(intersections):
         line_lat = bin_height * (1 + jj)
         if len(line_intersections) == 0:

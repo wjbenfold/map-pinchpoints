@@ -1,14 +1,16 @@
 import OSGridConverter as osgc
 from typing import Tuple, Union
 
+from my_types import LatLon
 
-def grid2latlon(grid: str) -> Tuple[float, float]:
+
+def grid2latlon(grid: str) -> LatLon:
     ll = osgc.grid2latlong(grid, tag="WGS84")
-    return float(ll.latitude), float(ll.longitude)
+    return LatLon(float(ll.latitude), float(ll.longitude))
 
 
-def latlon2grid(lat: float, lon: float) -> str:
-    return osgc.latlon2grid(lat, lon)
+def latlon2grid(latlon: LatLon) -> str:
+    return osgc.latlon2grid(*latlon)
 
 
 def split_grid(grid: str) -> Tuple[str, int, int]:
@@ -18,5 +20,5 @@ def split_grid(grid: str) -> Tuple[str, int, int]:
 
 def join_grid(
     letters: str, xx: Union[int, str], yy: Union[int, str]
-) -> Tuple[str, int, int]:
+) -> str:
     return " ".join([letters, str(xx), str(yy)])

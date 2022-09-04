@@ -1,16 +1,21 @@
+from typing import List, Tuple
 import overpy
 from my_types import LatLon, Segment, WayInfo
-import overpass_query
+from . import overpass_query
 
 
-def get_ways(maps, filtered_highways):
+def get_ways(
+    maps: List[Tuple[LatLon, LatLon]], filtered_highways: List[str]
+) -> List[WayInfo]:
 
     result: overpy.Result = overpass_query.get_highways_from_maps(maps)
 
     return waysFromResult(result, filtered_highways)
 
 
-def waysFromResult(result, filtered_highways):
+def waysFromResult(
+    result: overpy.Result, filtered_highways: List[str]
+) -> List[WayInfo]:
     def way_filter(way: overpy.Way) -> bool:
         if way.tags.get("highway") in filtered_highways:
             return False

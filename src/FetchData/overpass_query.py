@@ -1,6 +1,7 @@
 import pickle
+from typing import List, Tuple
 import overpy
-import os_convert
+from my_types import LatLon
 import sys
 from pathlib import Path
 
@@ -24,12 +25,12 @@ def get_highways(lat_min, lon_min, lat_max, lon_max):
     return result
 
 
-def get_highways_by_corners(corner1, corner2):
+def get_highways_by_corners(corner1: LatLon, corner2: LatLon) -> overpy.Result:
     if "--use-cache" in sys.argv and Path(pickle_path).exists():
         with open(pickle_path, "rb") as fh:
             return pickle.load(fh)
-    lat1, lon1 = os_convert.grid2latlon(corner1)
-    lat2, lon2 = os_convert.grid2latlon(corner2)
+    lat1, lon1 = corner1
+    lat2, lon2 = corner2
     return_val = get_highways(
         min(lat1, lat2), min(lon1, lon2), max(lat1, lat2), max(lon1, lon2)
     )
@@ -39,7 +40,7 @@ def get_highways_by_corners(corner1, corner2):
     return return_val
 
 
-def get_highways_from_maps(maps):
+def get_highways_from_maps(maps: List[Tuple[LatLon, LatLon]]) -> overpy.Result:
     try:
         (corners,) = maps
         corner1, corner2 = corners
