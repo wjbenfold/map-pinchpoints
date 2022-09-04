@@ -10,3 +10,17 @@ Library for finding pinchpoints for hikers from OSM data
 ```
     python alpha.py
 ```
+
+## TO DO:
+
+### Known bugs
+- The algorithm drops half of loops because the network can't distinguish them
+- No route around something should make it a pinchpoint (at least in small networks)
+
+### Additional features:
+- Location input
+- Portablility
+- Multiple maps
+- Draw the whole pinchpoint segment
+- Cache sections of map
+- YAML config?
