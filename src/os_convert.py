@@ -10,7 +10,7 @@ def grid2latlon(grid: str) -> LatLon:
 
 
 def latlon2grid(latlon: LatLon) -> str:
-    return osgc.latlon2grid(*latlon)
+    return osgc.latlong2grid(*latlon)
 
 
 def split_grid(grid: str) -> Tuple[str, int, int]:

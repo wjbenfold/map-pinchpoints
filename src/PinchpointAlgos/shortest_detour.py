@@ -19,7 +19,7 @@ def getWeight(segment):
     )
 
 
-def getBottlenecks(way_infos: List[WayInfo], *args):
+def getBottlenecks(way_infos: List[WayInfo], *args, **kwargs):
 
     G = nx.Graph()
 

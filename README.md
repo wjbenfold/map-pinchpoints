@@ -8,7 +8,7 @@ Library for finding pinchpoints for hikers from OSM data
 ## Usage
 
 ```
-    python alpha.py
+$ python alpha.py
 ```
 
 ## TO DO:
@@ -20,7 +20,5 @@ Library for finding pinchpoints for hikers from OSM data
 ### Additional features:
 - Location input
 - Portablility
-- Multiple maps
 - Draw the whole pinchpoint segment
-- Cache sections of map
 - YAML config?

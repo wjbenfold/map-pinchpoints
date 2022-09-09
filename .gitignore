@@ -130,3 +130,6 @@ dmypy.json
 
 # Pickles
 *.p
+
+# map data
+map.xml
