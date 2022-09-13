@@ -11,18 +11,17 @@ def get_ways_from_api(
 
     results: List[overpy.Result] = overpass_query.get_highways_from_maps(maps)
 
-    return waysFromResult(results, filtered_highways)
-
-def get_ways_from_file(
-    filtered_highways: List[str]
-) -> List[WayInfo]:
-
-    results: List[overpy.Result] = overpass_query.get_highways(from_file=True)
-
-    return waysFromResult(results, filtered_highways)
+    return waysFromResults(results, filtered_highways)
 
 
-def waysFromResult(
+def get_ways_from_file(filtered_highways: List[str]) -> List[WayInfo]:
+
+    result: List[overpy.Result] = overpass_query.get_highways(from_file=True)
+
+    return waysFromResults([result], filtered_highways)
+
+
+def waysFromResults(
     results: List[overpy.Result], filtered_highways: List[str]
 ) -> List[WayInfo]:
     def way_filter(way: overpy.Way) -> bool:
