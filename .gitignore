@@ -128,8 +128,7 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-# Pickles
+# Data files
 *.p
-
-# map data
-map.xml
+*.xml
+*.csv

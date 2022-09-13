@@ -14,5 +14,5 @@ def latlon2grid(latlon: LatLon, precision: Union[None, int] = None) -> str:
     if precision is None:
         return full_precision
     else:
-        letters, first_num, second_num = full_precision.split(" ")
+        letters, first_num, second_num = str(full_precision).split(" ")
         return f"{letters} {first_num[:precision]} {second_num[:precision]}"
