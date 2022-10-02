@@ -1,0 +1,28 @@
+download:
+  min_lat: 51.6853000 # decrease this?
+  min_lon: -0.2335000
+  max_lat: 52.2042000
+  max_lon: 1.1618000
+  output_filename_xml: map.xml
+pinchpoints:
+  filtered_highways:
+    - motorway
+    - service
+    - primary
+  min_detour: 0.5
+  output_filename_csv: detours_min_5.csv
+outputs:
+  phone_csv:
+    min_detour: 4
+    output_filename_csv: phone_data.csv
+  wkt:
+    min_lat: 51.6853000 # decrease this?
+    max_lat: -0.2335000
+    min_lon: 52.2042000
+    max_lon: 1.1618000
+    min_detour: 4
+    output_filename_csv: google_wkts.csv
+phone_html:
+  python_template: template_python.txt
+  html_template: template_html.txt
+  output_filename_html: pinchpoints.html

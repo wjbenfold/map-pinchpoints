@@ -1,0 +1,43 @@
+import OSGridConverter
+import csv
+import js
+
+data = """{{ csv_data }}"""
+
+map_corner1 = js.document.getElementById("corner1").value
+map_corner2 = js.document.getElementById("corner2").value
+
+ll1 = OSGridConverter.grid2latlong(map_corner1)
+lat1, lon1 = ll1.latitude, ll1.longitude
+ll2 = OSGridConverter.grid2latlong(map_corner2)
+lat2, lon2 = ll2.latitude, ll2.longitude
+
+min_lat, max_lat = sorted([lat1, lat2])
+min_lon, max_lon = sorted([lon1, lon2])
+
+output_list = []
+reader = csv.DictReader(
+    data.splitlines(), fieldnames=["lat1", "lon1", "lat2", "lon2", "grid1", "grid2", "detour"]
+)
+for row in reader:
+    if (
+        float(row["lat1"]) > min_lat
+        and float(row["lat2"]) > min_lat  # noqa: W503
+        and float(row["lat1"]) < max_lat  # noqa: W503
+        and float(row["lat2"]) < max_lat  # noqa: W503
+        and float(row["lon1"]) > min_lon  # noqa: W503
+        and float(row["lon2"]) > min_lon  # noqa: W503
+        and float(row["lon1"]) < max_lon  # noqa: W503
+        and float(row["lon2"]) < max_lon  # noqa: W503
+    ):
+        output_list.append(
+            (
+                row["detour"],
+                f"{row['grid1']} to {row['grid2']} detour of {row['detour']}km",
+            )
+        )
+sorted_output_list = map(
+    lambda x: x[1], sorted(output_list, key=lambda x: x[0], reverse=True)
+)
+
+js.document.getElementById("output").value = "\n".join(sorted_output_list)

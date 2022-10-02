@@ -10,29 +10,36 @@ import numpy as np
 
 def getWeight(segment):
     (lat1, lon1), (lat2, lon2) = segment
+    rlat1 = np.radians(lat1)
+    rlon1 = np.radians(lon1)
+    rlat2 = np.radians(lat2)
+    rlon2 = np.radians(lon2)
     return (
         np.arccos(
-            np.sin(lat1) * np.sin(lat2)
-            + np.cos(lat1) * np.cos(lat2) * np.cos(lon2 - lon1)
+            np.sin(rlat1) * np.sin(rlat2)
+            + np.cos(rlat1) * np.cos(rlat2) * np.cos(rlon2 - rlon1)  # noqa: W503
         )
-        * 6371000
+        * 6371  # noqa: W503
     )
 
 
-def getBottlenecks(usable_way_infos: List[WayInfo], *args):
-
+def graphFromWayInfos(way_infos):
     G = nx.Graph()
 
-    def segmentGen(usable_way_infos):
-        for way_info in usable_way_infos:
+    def segmentGen(way_infos):
+        for way_info in way_infos:
             for segment in way_info.segments:
                 weight = getWeight(segment)
                 yield *segment, {"weight": weight}
 
-    G.add_edges_from(segmentGen(usable_way_infos))
+    G.add_edges_from(segmentGen(way_infos))
 
-    print(G.number_of_nodes())
-    print(G.number_of_edges())
+    return G
+
+
+def getBottlenecks(way_infos: List[WayInfo], *args, **kwargs):
+
+    G = graphFromWayInfos(way_infos)
 
     while True:
         unary_nodes = [*map(lambda y: y[0], filter(lambda x: x[1] == 1, G.degree()))]
@@ -49,19 +56,19 @@ def getBottlenecks(usable_way_infos: List[WayInfo], *args):
                 G[neighbour1][b_node]["weight"] + G[neighbour2][b_node]["weight"]
             )
         except ValueError:
-            print("loop including", b_node)
+            # print("loop including", b_node)
             continue
-        G.add_edge(neighbour1, neighbour2, weight=new_weight)
-        G.remove_node(b_node)
+        if G.has_edge(neighbour1, neighbour2):
+            pass  # Because our new edge would wipe out this one
+        else:
+            G.add_edge(neighbour1, neighbour2, weight=new_weight)
+            G.remove_node(b_node)
 
     while True:
         unary_nodes = [*map(lambda y: y[0], filter(lambda x: x[1] == 1, G.degree()))]
         if not unary_nodes:
             break
         G.remove_nodes_from(unary_nodes)
-
-    print(G.number_of_nodes())
-    print(G.number_of_edges())
 
     detour_weights = []
 
@@ -70,15 +77,16 @@ def getBottlenecks(usable_way_infos: List[WayInfo], *args):
         G.remove_edge(node1, node2)
 
         try:
-            detour_weight = nx.dijkstra_path_length(G, node1, node2)
+            detour_weight = (
+                nx.dijkstra_path_length(G, node1, node2) - edge_data["weight"]
+            )
         except nx.NetworkXNoPath:
             G.add_edge(node1, node2, **edge_data)
             continue
 
         G.add_edge(node1, node2, **edge_data)
 
-        detour_weights.append(((node1, node2, edge_data), detour_weight))
+        detour_weights.append(((node1, node2, edge_data["weight"]), detour_weight))
 
-    return [*map(
-        lambda x: x[0][0], sorted(detour_weights, key=lambda x: x[1], reverse=True)[:10]
-    )]
+    for detour_weight in sorted(detour_weights, key=lambda x: x[1], reverse=True):
+        yield detour_weight
