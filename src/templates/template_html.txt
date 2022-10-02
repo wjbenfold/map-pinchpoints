@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.21.3/full/pyodide.js"></script>
+  </head>
+
+  <body>
+    <input id="corner1" value="Map corner 1" />
+    <input id="corner2" value="Map corner 2" />
+    <!-- <input id="corner1" value="TL 49 43" />
+    <input id="corner2" value="TL 59263 34206" /> -->
+    <button onclick="evaluatePython()">Run</button>
+    <br />
+    <br />
+    <div>Output:</div>
+    <textarea id="output" style="width: 100%;" rows="6" disabled></textarea>
+
+    <script>
+      const output = document.getElementById("output");
+
+      const code = `
+{{ python_code }}
+`
+
+      output.value = "Initializing...\n";
+
+      async function main() {
+        let pyodide = await loadPyodide();
+        output.value = "Ready!\n";
+        return pyodide;
+      }
+      let pyodideReadyPromise = main();
+
+      async function evaluatePython() {
+        output.value = "Computing...\n";
+        let pyodide = await pyodideReadyPromise;
+        await pyodide.loadPackage("micropip");
+        const micropip = pyodide.pyimport("micropip");
+        await micropip.install("OSGridConverter");
+        try {
+          pyodide.runPython(code);
+        } catch (err) {
+          output.value = err;
+        }
+      }
+    </script>
+  </body>
+</html>
+
+

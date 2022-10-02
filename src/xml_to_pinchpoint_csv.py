@@ -1,29 +1,33 @@
 import csv
-import FetchData
-import os_convert
+import get_data
 
 from shortest_detour import getBottlenecks
 
-way_infos = FetchData.get_ways_from_file(
-    filtered_highways=["motorway", "service", "primary"],
-)
 
-# fyi way_infos can have duplicates in
+def main(config):
 
-bottlenecks = getBottlenecks(way_infos)
+    way_infos = get_data.get_ways_from_file(
+        config["download"]["output_filename_xml"],
+        filtered_highways=config["pinchpoints"]["filtered_highways"],
+    )
 
-min_detour = 0.5
+    # fyi way_infos can have duplicates in
 
-print("Bottlenecks")
+    bottlenecks = getBottlenecks(way_infos)
 
-with open(f"detours_min_{int(min_detour*10)}.csv", "w+") as fh:
-    csv_writer = csv.writer(fh)
-    for bottleneck in bottlenecks:
-        (node1, node2, weight), detour_weight = bottleneck
-        if detour_weight < min_detour:
-            break
-        print(
-            f"  {os_convert.latlon2grid(node1, 3)} to {os_convert.latlon2grid(node2, 3)} detour {round(detour_weight)}"
-        )
+    min_detour = config["pinchpoints"]["min_detour"]
 
-        csv_writer.writerow([node1.lat, node1.lon, node2.lat, node2.lon, detour_weight])
+    with open(config["pinchpoints"]["output_filename_csv"], "w+") as fh:
+        csv_writer = csv.writer(fh)
+        for bottleneck in bottlenecks:
+            (node1, node2, _), detour_weight = bottleneck
+            if detour_weight < min_detour:
+                break
+
+            csv_writer.writerow(
+                [node1.lat, node1.lon, node2.lat, node2.lon, detour_weight]
+            )
+
+
+if __name__ == "__main__":
+    main()

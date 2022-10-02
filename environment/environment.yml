@@ -13,9 +13,9 @@ dependencies:
   - brotlipy=0.7.0=py310h5764c6d_1004
   - bzip2=1.0.8=h7f98852_4
   - c-ares=1.18.1=h7f98852_0
-  - ca-certificates=2022.6.15=ha878542_0
+  - ca-certificates=2022.9.24=ha878542_0
   - cartopy=0.20.3=py310he7eef42_2
-  - certifi=2022.6.15=pyhd8ed1ab_1
+  - certifi=2022.9.24=pyhd8ed1ab_0
   - cffi=1.15.1=py310h255011f_0
   - charset-normalizer=2.1.1=pyhd8ed1ab_0
   - click=8.1.3=py310hff52083_0
@@ -44,6 +44,7 @@ dependencies:
   - idna=3.3=pyhd8ed1ab_0
   - importlib-metadata=4.11.4=py310hff52083_0
   - jack=1.9.18=h8c3723f_1002
+  - jinja2=3.1.2=pyhd8ed1ab_1
   - jpeg=9e=h166bdaf_2
   - keyutils=1.6.1=h166bdaf_0
   - kiwisolver=1.4.4=py310hbf28c38_0
@@ -97,6 +98,7 @@ dependencies:
   - libxkbcommon=1.0.3=he3ba5ed_0
   - libxml2=2.9.14=h22db469_4
   - libzlib=1.2.12=h166bdaf_2
+  - markupsafe=2.1.1=py310h5764c6d_1
   - matplotlib=3.5.3=py310hff52083_2
   - matplotlib-base=3.5.3=py310h8d5ebf3_2
   - mccabe=0.7.0=pyhd8ed1ab_0
@@ -138,6 +140,7 @@ dependencies:
   - python=3.10.6=h582c2e5_0_cpython
   - python-dateutil=2.8.2=pyhd8ed1ab_0
   - python_abi=3.10=2_cp310
+  - pyyaml=6.0=py310h5764c6d_4
   - qt-main=5.15.4=ha5833f6_2
   - readline=8.1.2=h0f457ee_0
   - requests=2.28.1=pyhd8ed1ab_0
@@ -164,8 +167,8 @@ dependencies:
   - xorg-libxau=1.0.9=h7f98852_0
   - xorg-libxdmcp=1.1.3=h7f98852_0
   - xz=5.2.6=h166bdaf_0
+  - yaml=0.2.5=h7f98852_2
   - zipp=3.8.1=pyhd8ed1ab_0
   - zstd=1.5.2=h6239696_4
   - pip:
     - osgridconverter==0.1.3
-prefix: /home/wjbenfold/miniconda3/envs/pinchpoints

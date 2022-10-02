@@ -1,5 +1,5 @@
 import pickle
-from typing import List, Tuple
+from typing import List, Optional, Tuple
 import overpy
 import os_convert
 from my_types import LatLon
@@ -7,14 +7,19 @@ import sys
 from pathlib import Path
 
 pickle_path = "cache.p"
-source_file = "map.xml"
 
 
-def get_highways(lat_min=None, lon_min=None, lat_max=None, lon_max=None, from_file: bool = False):
+def get_highways(
+    lat_min=None,
+    lon_min=None,
+    lat_max=None,
+    lon_max=None,
+    source_file: Optional[str] = None,
+):
 
     api = overpy.Overpass()
 
-    if from_file:
+    if source_file is not None:
 
         with open(source_file, "r+") as fh:
 

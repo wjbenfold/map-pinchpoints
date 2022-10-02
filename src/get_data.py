@@ -2,7 +2,7 @@ import itertools
 from typing import List, Tuple
 import overpy
 from my_types import LatLon, Segment, WayInfo
-from . import overpass_query
+import overpass_query
 
 
 def get_ways_from_api(
@@ -14,9 +14,9 @@ def get_ways_from_api(
     return waysFromResults(results, filtered_highways)
 
 
-def get_ways_from_file(filtered_highways: List[str]) -> List[WayInfo]:
+def get_ways_from_file(filename: str, filtered_highways: List[str]) -> List[WayInfo]:
 
-    result: List[overpy.Result] = overpass_query.get_highways(from_file=True)
+    result: List[overpy.Result] = overpass_query.get_highways(source_file=filename)
 
     return waysFromResults([result], filtered_highways)
 

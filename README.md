@@ -7,17 +7,15 @@ Library for finding pinchpoints for hikers from OSM data
 
 ## Usage
 
+Config lives in `config.yaml`
+
 ```
-$ python alpha.py
+$ python run_pipeline.py
 ```
 
 ## TO DO:
 
-### Known bugs
-- No route around something should make it a pinchpoint (at least in small networks)
-
 ### Additional features:
-- Location input
-- Portability
-- Draw the whole pinchpoint segment
-- YAML config?
+- No route around something could make it a pinchpoint (at least in small networks)
+- Typing throughout
+- Break out graph manipulation code to separate file
