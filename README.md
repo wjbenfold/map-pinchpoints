@@ -19,3 +19,5 @@ $ python run_pipeline.py
 - No route around something could make it a pinchpoint (at least in small networks)
 - Typing throughout
 - Break out graph manipulation code to separate file
+- File renaming
+- Less hacky/more polite data download
