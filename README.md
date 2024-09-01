@@ -21,3 +21,4 @@ $ python run_pipeline.py
 - Break out graph manipulation code to separate file
 - File renaming
 - Less hacky/more polite data download
+- Add testing

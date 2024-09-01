@@ -1112,7 +1112,7 @@ sorted_output_list = map(
     lambda x: x[1], sorted(output_list, key=lambda x: x[0], reverse=True)
 )
 
-js.document.getElementById("output").value = "\n".join(sorted_output_list)
+js.document.getElementById("output").value = "\\n".join(sorted_output_list)
 `
 
       output.value = "Initializing...\n";
